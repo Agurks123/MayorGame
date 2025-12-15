@@ -4,7 +4,7 @@ public final class Constants {
 
     private Constants() {}
     public static final int MAYOR_STARTING_POPULARITY = 35;
-    public static final int MAYOR_STARTING_BUDGET = 2500;
+    public static final int MAYOR_STARTING_BUDGET = 250;
 
     public static final int CITY_STARTING_VALUES_FLUCTUATION = 21;   // ALWAYS +1 FOR RANDOM FUNC, SO WHAT IT REALLY MEANS IS 20
     public static final int CITY_STARTING_VALUES_CIVIALIAN = 35;
