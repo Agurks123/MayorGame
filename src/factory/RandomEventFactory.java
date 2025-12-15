@@ -1,32 +1,18 @@
-import java.util.*;
+package factory;
 
-public class RandomEventManager {
-    private List<RandomEvent> events = new ArrayList<>();
-    private Random random = new Random();
-    private RandomEvent currentEvent;
+import model.RandomEvent;
+import model.Type;
 
-    public RandomEventManager() {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-        //events.add(new RandomEvent(
-        //        "Business boom",
-        //        "Local businesses prosper significantly",
-        //        Map.of(Type.BUSINESS, 15)
-        //));
-        //events.add(new RandomEvent(
-        //        "Community festival",
-        //        "Citizens enjoy a big festival",
-        //        Map.of(Type.CIVILIAN, 15, Type.BUSINESS, 5)
-        //));
-        //events.add(new RandomEvent(
-        //        "Environmental cleanup",
-        //        "Volunteers clean parks and rivers",
-        //        Map.of(Type.ENVIRONMENT, 10)
-        //));
-        //events.add(new RandomEvent(
-        //        "Neighborhood watch formed",
-        //        "Citizens unite to improve security",
-        //        Map.of(Type.CIVILIAN, 5, Type.SECURITY, 15)
-        //));
+public class RandomEventFactory {
+
+    public List<RandomEvent> createDefaultEvents() {
+
+        List<RandomEvent> events = new ArrayList<>();
+
         events.add(new RandomEvent(
                 "New shopping mall opens",
                 "Business gets a boost, some environmental damage",
@@ -103,17 +89,9 @@ public class RandomEventManager {
                 "A major bridge collapses due to poor maintenance, causing chaos in the city.",
                 Map.of(Type.SECURITY, -10, Type.BUSINESS, -10, Type.CIVILIAN, -5)
         ));
-    }
 
-    public void grabNewRandomEvent() {
-        currentEvent = events.get(random.nextInt(events.size()));
-    }
+        // ... likę eventai
 
-    public RandomEvent getCurrentEvent() {
-        if (currentEvent == null) {
-            grabNewRandomEvent(); // initialize if no event yet
-        }
-        return currentEvent;
+        return events;
     }
 }
-

@@ -1,3 +1,5 @@
+package oldGameFiles;
+
 import java.io.*;
 import java.util.*;
 
@@ -10,7 +12,7 @@ public class Deck {
         cards = new ArrayList<>();
         loadCardsFromFile(cards,"cards.txt");
         shuffle();
-        //for (Card card : cards) {
+        //for (oldGameFiles.Card card : cards) {
         //    System.out.println(card.name + "  " + card.effects);
         //}
     }
@@ -85,7 +87,7 @@ public class Deck {
     }
 
 
-    private List<Card> loadCardsFromFile(List<Card> cards,String filePath) {
+    private List<Card> loadCardsFromFile(List<Card> cards, String filePath) {
 
         InputStream is = getClass().getClassLoader().getResourceAsStream(filePath);
         if (is == null) {
@@ -110,7 +112,7 @@ public class Deck {
                 int requirement = Integer.parseInt(parts[3]);
                 int duration = Integer.parseInt(parts[4]);
 
-                // parse List<Map.Entry<Type, Integer>>
+                // parse List<Map.Entry<oldGameFiles.Type, Integer>>
                 List<Map.Entry<Type, Integer>> effects = new ArrayList<>();
                 String[] effectsParts = parts[5].split(",");
                 for (String effectStr : effectsParts) {

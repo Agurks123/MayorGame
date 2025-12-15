@@ -1,0 +1,16 @@
+package input;
+
+public enum Command {
+    BUY,
+    PUT_BACKPACK,
+    PUT_BACKPACK_ERROR,
+    EMPTY_BACKPACK,
+    EMPTY_BACKPACK_ERROR,
+    NEXT_TURN,
+    REFILL,
+    EXIT,
+    INVALID,
+    NOT_ENOUGH_MONEY,
+    REQUIREMENT_NOT_MET,
+    OUT_OF_RANGE
+}

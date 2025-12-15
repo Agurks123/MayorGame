@@ -1,5 +1,5 @@
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
+package oldGameFiles;
+
 import java.util.*;
 
 public class Game {
@@ -178,6 +178,9 @@ public class Game {
                     prevGroupValues[3] = city.securityLevel;
                     // idet mero popularity checkus galimai win galimai lose
                 }
+
+                deck.discardCards(cards);
+                city.activeEffectManager();
 
                 if (deck.getCardsSize() <= 0) {info[2] = "The deck is empty!!";} //// IDK
                 cards = deck.drawCards();

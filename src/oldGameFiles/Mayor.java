@@ -1,3 +1,5 @@
+package oldGameFiles;
+
 public class Mayor {
 
     //protected String name;
