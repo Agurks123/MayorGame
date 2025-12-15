@@ -9,26 +9,6 @@ public class RandomEventManager {
 
     public RandomEventManager() {
 
-        //events.add(new oldGameFiles.RandomEvent(
-        //        "Business boom",
-        //        "Local businesses prosper significantly",
-        //        Map.of(oldGameFiles.Type.BUSINESS, 15)
-        //));
-        //events.add(new oldGameFiles.RandomEvent(
-        //        "Community festival",
-        //        "Citizens enjoy a big festival",
-        //        Map.of(oldGameFiles.Type.CIVILIAN, 15, oldGameFiles.Type.BUSINESS, 5)
-        //));
-        //events.add(new oldGameFiles.RandomEvent(
-        //        "Environmental cleanup",
-        //        "Volunteers clean parks and rivers",
-        //        Map.of(oldGameFiles.Type.ENVIRONMENT, 10)
-        //));
-        //events.add(new oldGameFiles.RandomEvent(
-        //        "Neighborhood watch formed",
-        //        "Citizens unite to improve security",
-        //        Map.of(oldGameFiles.Type.CIVILIAN, 5, oldGameFiles.Type.SECURITY, 15)
-        //));
         events.add(new RandomEvent(
                 "New shopping mall opens",
                 "Business gets a boost, some environmental damage",

@@ -1,8 +1,5 @@
 package render;
 
-import core.TurnManager;
-import input.InputHandler;
-import jdk.jfr.Event;
 import model.*;
 
 import java.util.ArrayList;
@@ -42,38 +39,37 @@ public class GameRenderer {
                     "Invest in business to grow your budget steadily."
             }
     };
-    //int screenWidth = 168;
 
     public void renderMainScreen(City city, Mayor mayor, Deck deck, List<Card> cards, String[] info)
     {
         ///  1 Line
-        System.out.printf("%-50s", "oldGameFiles.Mayor budget: " + mayor.getBudget() + " -> " + (mayor.getBudget()+((int)(city.get(BUSINESS)*MAYOR_BUDGET_MULTIPLIER))) + " (next turn)");
-        System.out.printf("%-87s", center(info[0],60));
+        System.out.printf("%-50s", "Mayor budget: " + mayor.getBudget() + " -> " + (mayor.getBudget()+((int)(city.get(BUSINESS)*MAYOR_BUDGET_MULTIPLIER))) + " (next turn)");
+        System.out.printf("%-87s", center(info[0],INFO_SCREEN_WIDTH));
         System.out.print("Civilian [");
         System.out.printf("%-20s", "|".repeat(city.get(CIVILIAN) / 5));
         System.out.println("]");
         ///  2 Line
-        System.out.printf("%-50s", String.format("oldGameFiles.Mayor Popularity: %.2f", mayor.getPopularity()));
-        System.out.printf("%-84s", center(info[1],60));
+        System.out.printf("%-50s", String.format("Mayor Popularity: %.2f", mayor.getPopularity()));
+        System.out.printf("%-84s", center(info[1],INFO_SCREEN_WIDTH));
         System.out.print("Environment [");
         System.out.printf("%-20s", "|".repeat(city.get(ENVIRONMENT) / 5));
         System.out.println("]");
         ///  3 Line
         System.out.printf("%-50s", "__________-\\_________");
-        System.out.printf("%-87s", center(info[2],60));
+        System.out.printf("%-87s", center(info[2],INFO_SCREEN_WIDTH));
         System.out.print("Business [");
         System.out.printf("%-20s", "|".repeat(city.get(BUSINESS) / 5));
         System.out.println("]");
         ///  4 Line
         System.out.printf("%-50s", "     _---   \\");
-        System.out.printf("%-87s", center(info[3],60));
+        System.out.printf("%-87s", center(info[3],INFO_SCREEN_WIDTH));
         System.out.print("Security [");
         System.out.printf("%-20s", "|".repeat(city.get(SECURITY) / 5));
         System.out.println("]");
 
-        ////////////////////////////////////////////////////////////////  oldGameFiles.Deck printas
+        ////////////////////////////////////////////////////////////////  Deck printas
         System.out.println("__---        \\\\          O                        O                                              O                                  O ");
-        System.out.printf("%-14s","oldGameFiles.Deck Size: " + deck.size()); // v
+        System.out.printf("%-14s","Deck Size: " + deck.size()); // v
         System.out.println(" \\       /|\\       O                /|\\                     O                    /|\\              O                 /|\\                     ");
         //  System.out.println("Buy 5 cards    ///      / \\    /|\\               / \\           O          /|\\                   / \\             /|\\       O        / \\                    ");
         System.out.println("Refill deck    ///      / \\    /|\\               / \\           O          /|\\                   / \\             /|\\       O        / \\                    ");
@@ -82,184 +78,180 @@ public class GameRenderer {
         System.out.println("   ////             / \\                / \\                                          / \\                 / \\                              / \\      ");
 
         ////////////////////////////////////////////////////////////////// Kortu printas
-        // kortu dydis, 16 blokeliu kortu laukas
-        int width = 21;
-        int height = 4;
 
-        if (cards.size() > 0) printCards(cards, width, height, mayor.getBackpack());
-            else if (mayor.getBackpack() != null) printBackpack(mayor.getBackpack(),width, height);
+        if (cards.size() > 0) printCards(cards, mayor.getBackpack());
+            else if (mayor.getBackpack() != null) printBackpack(mayor.getBackpack());
             else System.out.print("\n".repeat(16));
+
         ///////////////////////////////////////////////////////////////////
 
         System.out.println("Enter card number (to buy), number -b (add to backpack), -b (remove from backpack), n/next (next turn), r/refill (refill deck by 5 cards -"+REFILL_COST+"$), exit (quit):");
         System.out.print("> ");
-        ///////////////////////////////////////////////////////////////////   INPUT logika
-        //System.out.println(deck.getCards().getLast().getName());
-
-
-
-
-
-
-
-
-
+        ///////////////////////////////////////////////////////////////////
 
 
 
     }
 
-    private void printBackpack(Card backpack, int width, int height) {
-        String[] backpackLines = new String[height];
+    private void printBackpack(Card backpack) {
+        String[] backpackLines = new String[utils.Constants.CARD_HEIGHT];
         String[] parts = backpack.getName().split(" ");
-        String[] fixed = new String[height];
+        String[] fixed = new String[utils.Constants.CARD_HEIGHT];
         List<Map.Entry<Type, Integer>> cardEffects = backpack.getEffects();
 
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < utils.Constants.CARD_HEIGHT; i++) {
             fixed[i] = (i < parts.length) ? parts[i] : ""; // fill empty lines
         }
         backpackLines = fixed;
 
-        System.out.println("\n".repeat(4));
-        System.out.println("            "+center("- Backpack -",width));
-        System.out.println("          --"+ "-".repeat(width));
-        System.out.println("          |"+ center(backpackLines[0], width)+"|");;
-        System.out.println("          |"+ center(backpackLines[1], width)+"|");;
-        System.out.println("          |"+ center(backpackLines[2], width)+"|");;
-        System.out.println("          |"+ center(backpackLines[3], width)+"|");;
-        System.out.println("          | Requirements:"+ " ".repeat(width-14)+"|");
-        System.out.printf("          |  >  %-16s|%n",backpack.getCost()+"$");
-        System.out.printf("          |  >  %-16s|%n",backpack.getType()+">"+backpack.getRequirement());
-        System.out.println("          |"+ " ".repeat(width)+"|");
-        System.out.println("          |"+ " ".repeat(width)+"|");
-        System.out.printf("          | %-20s",String.format("%-3s","+".repeat((cardEffects.get(0).getValue()/10)+1))+" "+cardEffects.get(0).getKey());
-        System.out.printf("          | %-20s",String.format("%-3s","+".repeat((15/10)+1))+" "+"neveikia");
+        System.out.println("\n".repeat(3));
+        System.out.println(" ".repeat(12)+center("- Backpack -", utils.Constants.CARD_WIDTH));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("--"+ "-".repeat(utils.Constants.CARD_WIDTH));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("|"+ center(backpackLines[0], utils.Constants.CARD_WIDTH)+"|");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("|"+ center(backpackLines[1], utils.Constants.CARD_WIDTH)+"|");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("|"+ center(backpackLines[2], utils.Constants.CARD_WIDTH)+"|");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("|"+ center(backpackLines[3], utils.Constants.CARD_WIDTH)+"|");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("| Requirements:"+ " ".repeat(utils.Constants.CARD_WIDTH -14)+"|");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.printf ("|  >  %-16s|%n",backpack.getCost()+"$");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.printf ("|  >  %-16s|%n",backpack.getType()+">"+backpack.getRequirement());
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("|"+ " ".repeat(utils.Constants.CARD_WIDTH)+"|");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("|"+ " ".repeat(utils.Constants.CARD_WIDTH)+"|");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.printf ("| %-20s",String.format("%-3s","+".repeat((cardEffects.get(0).getValue()/10)+1))+" "+cardEffects.get(0).getKey());
         System.out.println("|");
 
     }
 
-    private void printCards(List<Card> cards, int width, int height, Card backpack) {
+    private void printCards(List<Card> cards, Card backpack) {
     // Preprocess: split each name into at most 'height' words
         List<String[]> cardLines = new ArrayList<>();
         for (Card card : cards) {
             String[] parts = card.getName().split(" ");
-            String[] fixed = new String[height];
-            for (int i = 0; i < height; i++) {
+            String[] fixed = new String[utils.Constants.CARD_HEIGHT];
+            for (int i = 0; i < utils.Constants.CARD_HEIGHT; i++) {
                 fixed[i] = (i < parts.length) ? parts[i] : ""; // fill empty lines
             }
             cardLines.add(fixed);        }
-        String[] backpackLines = new String[height];
+        String[] backpackLines = new String[utils.Constants.CARD_HEIGHT];
         if(backpack != null){
             String[] parts = backpack.getName().split(" ");
-            String[] fixed = new String[height];
+            String[] fixed = new String[utils.Constants.CARD_HEIGHT];
 
-            for (int i = 0; i < height; i++) {
+            for (int i = 0; i < utils.Constants.CARD_HEIGHT; i++) {
                 fixed[i] = (i < parts.length) ? parts[i] : ""; // fill empty lines
             }
             backpackLines = fixed;
         }
 
         // Print all lines row by row
-        System.out.print(" ".repeat(10));
-        System.out.println("-".repeat(width*cardLines.size()) + "-".repeat(cardLines.size()) + "-");
-        for (int line = 0; line < height; line++) {
-            System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.println("-".repeat(utils.Constants.CARD_WIDTH *cardLines.size()) + "-".repeat(cardLines.size()) + "-");
+        for (int line = 0; line < utils.Constants.CARD_HEIGHT; line++) {
+            System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
             for (String[] lines : cardLines) {
-                System.out.print("|" + center(lines[line], width));
+                System.out.print("|" + center(lines[line], utils.Constants.CARD_WIDTH));
             }
-            if(line < height-1) System.out.println("|");
-            else if (backpack != null) System.out.println("|   "+center("- Backpack -",width));
+            if(line < utils.Constants.CARD_HEIGHT -1) System.out.println("|");
+            else if (backpack != null) System.out.println("|   "+center("- Backpack -", utils.Constants.CARD_WIDTH));
             else System.out.println("|");
         }
 
-        // mine addition
-        System.out.print(" ".repeat(10));
+
+        // info lines prasideda
+
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
-            //System.out.print("|" + " ".repeat(width));
             System.out.printf("| %-20s","Requirements:");
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  --"+ "-".repeat(width));
+        else System.out.println("|  --"+ "-".repeat(utils.Constants.CARD_WIDTH));
 
 
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
             System.out.printf("|  >  %-16s",card.getCost()+"$");
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  |"+ center(backpackLines[0], width)+"|");;
+        else System.out.println("|  |"+ center(backpackLines[0], utils.Constants.CARD_WIDTH)+"|");;
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
             if (card.getRequirement() != 0){
                 System.out.printf("|  >  %-16s",card.getType()+">"+card.getRequirement());
             }
-            else System.out.print("|" + " ".repeat(width));
+            else System.out.print("|" + " ".repeat(utils.Constants.CARD_WIDTH));
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  |"+ center(backpackLines[1], width)+"|");;
+        else System.out.println("|  |"+ center(backpackLines[1], utils.Constants.CARD_WIDTH)+"|");;
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
-            System.out.print("|" + " ".repeat(width));
+            System.out.print("|" + " ".repeat(utils.Constants.CARD_WIDTH));
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  |"+ center(backpackLines[2], width)+"|");;
+        else System.out.println("|  |"+ center(backpackLines[2], utils.Constants.CARD_WIDTH)+"|");;
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
-            System.out.print("|" + " ".repeat(width));
+            System.out.print("|" + " ".repeat(utils.Constants.CARD_WIDTH));
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  |"+ center(backpackLines[3], width)+"|");;
+        else System.out.println("|  |"+ center(backpackLines[3], utils.Constants.CARD_WIDTH)+"|");;
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
 
             System.out.printf("| %-20s",String.format("%-3s","+".repeat((card.getEffects().get(0).getValue()/10)+1))+" "+card.getEffects().get(0).getKey());
-            //System.out.printf("| %-20s",String.format("%-3s","+".repeat((15/10)+1))+" "+"neveikia");
-
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  | Requirements: "+ " ".repeat(width-15)+"|");
+        else System.out.println("|  | Requirements: "+ " ".repeat(utils.Constants.CARD_WIDTH -15)+"|");
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
             System.out.printf("| %-20s",String.format("%-3s","-".repeat((Math.abs(card.getEffects().get(1).getValue())/10)+1))+" "+card.getEffects().get(1).getKey());
-            //System.out.printf("| %-20s",String.format("%-3s","-".repeat((Math.abs(15)/10)+1))+" "+"neveikia");
-        }
+         }
         if(backpack == null)System.out.println("|");
         else System.out.printf("|  |  >  %-16s|%n",backpack.getCost()+"$");
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
             if (card.getEffects().size()>2)
                 System.out.printf("| ?   %-16s",". . . .");
-            else System.out.print("|" + " ".repeat(width));
+            else System.out.print("|" + " ".repeat(utils.Constants.CARD_WIDTH));
         }
         if(backpack == null)System.out.println("|");
         else System.out.printf("|  |  >  %-16s|%n",backpack.getType()+">"+backpack.getRequirement());
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (Card card : cards) {
             if (card.getDuration()>0)
                 System.out.printf("|%21s",card.getDuration()+" turns ");
-            else System.out.print("|"+" ".repeat(width));
+            else System.out.print("|"+" ".repeat(utils.Constants.CARD_WIDTH));
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  |"+ " ".repeat(width)+"|");
+        else System.out.println("|  |"+ " ".repeat(utils.Constants.CARD_WIDTH)+"|");
 
-        System.out.print(" ".repeat(10));
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
         for (int i = 1; i <= cardLines.size(); i++) {
-            System.out.print("|"+ " ".repeat(width/2)+ i+ " ".repeat(width/2));
+            System.out.print("|"+ " ".repeat(utils.Constants.CARD_WIDTH /2)+ i+ " ".repeat(utils.Constants.CARD_WIDTH /2));
         }
         if(backpack == null)System.out.println("|");
-        else System.out.println("|  |"+ " ".repeat(width)+"|");
+        else System.out.println("|  |"+ " ".repeat(utils.Constants.CARD_WIDTH)+"|");
 
 
-        System.out.print(" ".repeat(10));
-        System.out.print("-".repeat(width*cardLines.size()) + "-".repeat(cardLines.size()) + "-");
+        System.out.print(" ".repeat(GAP_BEFORE_PRINTING_CARDS));
+        System.out.print("-".repeat(utils.Constants.CARD_WIDTH *cardLines.size()) + "-".repeat(cardLines.size()) + "-");
         if(backpack != null){
             System.out.printf("  | %-20s",String.format("%-3s","+".repeat((backpack.getEffects().get(0).getValue()/10)+1))+" "+backpack.getEffects().get(0).getKey());
             //System.out.printf("  | %-20s",String.format("%-3s","+".repeat((15/10)+1))+" "+"neveikia");
@@ -269,6 +261,7 @@ public class GameRenderer {
         //if(backpack != null)System.out.print("  |"+ "+".repeat(width)+"|");
         System.out.println();
     }
+
 
     public void printYearlyReview(City city){
 
@@ -280,7 +273,6 @@ public class GameRenderer {
         System.out.println("\n\n\n");
 
         System.out.println(center(reflections[random.nextInt(reflections.length)],SCREEN_WIDTH));
-        //System.out.println("\n\n");
 
         System.out.print(" ".repeat((SCREEN_WIDTH/2)-3));
         for(int i = 0; i < 3; i++) {
@@ -288,8 +280,8 @@ public class GameRenderer {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // optional: restore interrupt status
-                break; // or just break the loop if interrupted
+                Thread.currentThread().interrupt(); // idk
+                break; // idk
             }
         }
         clearTerminal();
@@ -298,12 +290,10 @@ public class GameRenderer {
         System.out.println(center("==============================================",SCREEN_WIDTH));
         System.out.println("\n\n");
 
-        //String bar = String.format("%-20", "|".repeat(city.citizensHappiness / 5));
-
-
         System.out.println(center("Shuffling cards...",SCREEN_WIDTH));
         System.out.println(center("Recalculating mayor popularity...",SCREEN_WIDTH));
         System.out.println("\n");
+
 
         double percentChange = (city.get(CIVILIAN) - city.getPrev(CIVILIAN)) / (double) city.getPrev(CIVILIAN) * 100;
         String percentage = String.format("]          ---- %+03.0f%% ---->          [", percentChange);
@@ -321,9 +311,9 @@ public class GameRenderer {
         percentage = String.format("]          ---- %+03.0f%% ---->          [", percentChange);
         System.out.println(center("Security ["+(String.format("%-20s", "|".repeat(city.getPrev(SECURITY) / 5)))+percentage+String.format("%-20s", "|".repeat(city.get(SECURITY) / 5))+"] Security",SCREEN_WIDTH));
 
-
-
         System.out.println("\n\n\n\n\n");
+
+
 
         System.out.println(center("tip:",SCREEN_WIDTH));
         int index = random.nextInt(tips.length);
@@ -377,7 +367,7 @@ public class GameRenderer {
         System.out.println("   and keep the mayor's popularity above 20%.");
         System.out.println("\n");
         System.out.println("   How to play:");
-        System.out.println("   - oldGameFiles.Type a card number to buy that card.");
+        System.out.println("   - Type a card number to buy that card.");
         System.out.println("   - Use 'number -b' to save a card to your backpack without buying it.");
         System.out.println("   - Use '-b' to remove the card from your backpack.");
         System.out.println("   - Use 'refill' to refill deck by 5 cards (-150$).");

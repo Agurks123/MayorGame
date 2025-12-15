@@ -72,7 +72,7 @@ public class GameLoop {
 
                 case REQUIREMENT_NOT_MET -> infoPlacer(ctx.info, ("You don't meet the requirements!"));
 
-                case OUT_OF_RANGE -> infoPlacer(ctx.info, ("oldGameFiles.Card number out of range!"));
+                case OUT_OF_RANGE -> infoPlacer(ctx.info, ("Card number out of range!"));
 
 
 

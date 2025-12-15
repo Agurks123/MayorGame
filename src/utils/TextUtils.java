@@ -5,13 +5,7 @@ public final class TextUtils {
 
     private TextUtils() {}
 
-    /**
-     * Centers text in terminal width.
-     */
     public static String center(String text, int width) {
-//        if (text == null || text.length() >= TERMINAL_WIDTH) {
-//            return text;
-//        }
         if (text.length() >= width) return text.substring(0, width);
 
         int leftPadding = (width - text.length()) / 2;
@@ -20,9 +14,6 @@ public final class TextUtils {
 
     }
 
-    /**
-     * Clears terminal screen (ANSI escape).
-     */
     public static void clearTerminal() {
             for (int i = 0; i < 50; i++) {
                 System.out.println();

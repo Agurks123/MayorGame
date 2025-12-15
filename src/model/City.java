@@ -4,10 +4,11 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import static utils.Constants.MAX_CITY_STAT_VALUE;
+import static utils.Constants.MIN_CITY_STAT_VALUE;
+
 public class City {
 
-    private static final int MIN_VALUE = 0;
-    private static final int MAX_VALUE = 100;
 
     private final Map<Type, Integer> stats = new EnumMap<>(Type.class);
     private final Map<Type, Integer> prevStats = new EnumMap<>(Type.class);
@@ -28,8 +29,6 @@ public class City {
         }
     }
 
-    // ---- getters ----
-
     public int get(Type type) {
         return stats.get(type);
     }
@@ -49,7 +48,6 @@ public class City {
         stats.put(type, clamp(stats.get(type) + delta));
     }
 
-    // ---- effects ----
 
     public void addEffect(Type type, int strength, int duration) {
         effectStrength.put(type, strength);
@@ -85,15 +83,13 @@ public class City {
         }
     }
 
-    // ---- game over ----
 
     public boolean isDead() {
         return stats.values().stream().anyMatch(v -> v <= 0);
     }
 
-    // ---- helpers ----
 
     private int clamp(int value) {
-        return Math.max(MIN_VALUE, Math.min(MAX_VALUE, value));
+        return Math.max(MIN_CITY_STAT_VALUE, Math.min(MAX_CITY_STAT_VALUE, value));
     }
 }

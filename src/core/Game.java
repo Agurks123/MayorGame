@@ -11,7 +11,7 @@ import strategy.*;
 import java.util.List;
 import java.util.Random;
 
-import static utils.Constants.MAX_TURNS;
+import static utils.Constants.*;
 import static utils.TextUtils.center;
 
 public class Game {
@@ -20,19 +20,16 @@ public class Game {
 
         Random rand = new Random();
 
-        Mayor mayor = new Mayor(35, 250);
+        Mayor mayor = new Mayor(MAYOR_STARTING_POPULARITY, MAYOR_STARTING_BUDGET);
 
         City city = new City(
-                rand.nextInt(21) + 35,
-                rand.nextInt(21) + 35,
-                rand.nextInt(21) + 35,
-                rand.nextInt(21) + 35
+                rand.nextInt(CITY_STARTING_VALUES_FLUCTUATION) + CITY_STARTING_VALUES_CIVIALIAN,
+                rand.nextInt(CITY_STARTING_VALUES_FLUCTUATION) + CITY_STARTING_VALUES_BUSINESS,
+                rand.nextInt(CITY_STARTING_VALUES_FLUCTUATION) + CITY_STARTING_VALUES_ENVIRONMENT,
+                rand.nextInt(CITY_STARTING_VALUES_FLUCTUATION) + CITY_STARTING_VALUES_SECURITY
         );
 
         Deck deck = new Deck(new CardFactory().createDefaultDeck());
-        //System.out.println(deck.size());
-
-        //List<oldGameFiles.Card> hand = deck.draw();
 
         RandomEventService eventService =
                 new RandomEventService(new RandomEventFactory().createDefaultEvents());
@@ -41,8 +38,8 @@ public class Game {
                 new ProgressiveEventChanceStrategy();
 
         String[] info = {
-                center("Year 1  1/8", 60), // magic 60 ??
-                "-".repeat(60),
+                center("Year 1  1/8", INFO_SCREEN_WIDTH),
+                "-".repeat(INFO_SCREEN_WIDTH),
                 "",
                 ""};
 
@@ -63,7 +60,7 @@ public class Game {
         loop.run(ctx, turnManager);
 
         // po loopo
-        if(turnManager.getTurn() >= MAX_TURNS && ctx.mayor.getPopularity()>=20)
+        if(turnManager.getTurn() >= MAX_TURNS && ctx.mayor.getPopularity()>=MIN_POPULARITY)
             ctx.renderer.winMessage();
         else
             ctx.renderer.lostMessage();

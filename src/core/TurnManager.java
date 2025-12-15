@@ -9,7 +9,7 @@ import strategy.EventChanceStrategy;
 import java.util.Scanner;
 
 import static model.Type.*;
-import static utils.Constants.MAYOR_BUDGET_MULTIPLIER;
+import static utils.Constants.*;
 import static utils.TextUtils.center;
 import static utils.TextUtils.infoPlacer;
 
@@ -36,8 +36,7 @@ public class TurnManager {
             new EventEffect(event).apply(ctx.city);
           }
         turn++;
-        ctx.info[0] = center("Year " + ((turn/ 8) + 1) + "  " + (((turn % 8) + 1)) + "/8", 60);
-        // ^ magic number 60?
+        ctx.info[0] = center("Year " + ((turn/ 8) + 1) + "  " + (((turn % 8) + 1)) + "/8", INFO_SCREEN_WIDTH);
 
         // YEARLY REVIEW
         if(turn % 8 == 0 && turn != 0 ){
@@ -54,7 +53,7 @@ public class TurnManager {
         if (ctx.deck.size() <= 0) infoPlacer(ctx.info, ("The deck is empty!!")); //// IDK
         ctx.hand = ctx.deck.draw();
 
-        return !ctx.city.isDead() && ctx.mayor.getPopularity() >= 20;
+        return !ctx.city.isDead() && ctx.mayor.getPopularity() >= MIN_MAYOR_POPULARITY;
     }
 
     public int getTurn() {

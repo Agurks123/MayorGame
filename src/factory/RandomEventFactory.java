@@ -90,7 +90,6 @@ public class RandomEventFactory {
                 Map.of(Type.SECURITY, -10, Type.BUSINESS, -10, Type.CIVILIAN, -5)
         ));
 
-        // ... likę eventai
 
         return events;
     }

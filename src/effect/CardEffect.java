@@ -6,10 +6,7 @@ import model.Type;
 
 import java.util.Map;
 
-/**
- * Represents the effect of playing a card on the city.
- * Applies instant or lasting effects based on the card's duration.
- */
+
 public class CardEffect implements GameEffect {
 
     private final Card card;
